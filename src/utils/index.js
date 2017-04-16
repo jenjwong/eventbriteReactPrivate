@@ -60,3 +60,10 @@ export const getDisplayHour = (hour) => _HOUR_DISPLAY_MAP[hour]
 export const getEventFromEvents = (events, eventId) => (
     events.find(({id}) => id === eventId)
 )
+
+/**
+ * Given a timestamp, returns a boolean indicating if the event has passed
+ * @param {number} timestamp - The date of the event
+ * @returns {boolean} - True if event has passed
+ */
+export const isEventPassed = timestamp => Date.now() > timestamp;
