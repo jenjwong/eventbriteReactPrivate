@@ -4,6 +4,8 @@ import EventDetailOverlay from './EventDetailOverlay';
 import {filterEventsByDay, getEventFromEvents, getDisplayDate} from '../utils';
 import DATA_SET from '../utils/data';
 import {MILLISECONDS_DAY} from '../utils/constants';
+import { connect } from 'react-redux';
+import { setSelectedEventId, setDay } from '../actions/actionCreators';
 
 import './Page.css';
 
@@ -25,39 +27,25 @@ const DayNavigator = ({dateDisplay, onPrev, onNext}) => {
     );
 };
 
-export default class Page extends PureComponent {
-    state = {
-        // unfiltered list of events
-        events: DATA_SET,
-
-        // The currently selected day represented by numerical timestamp
-        day: Date.now(),
-
-        // The currently selected event in the agenda
-        // (mainly to trigger event detail overlay)
-        selectedEventId: undefined
-    }
-
+class Page extends PureComponent {
     _handleSelectEvent(selectedEventId) {
-        this.setState({selectedEventId});
+        this.props.dispatch(setSelectedEventId(selectedEventId));
     }
 
     _handleEventDetailOverlayClose() {
-        this.setState({selectedEventId: undefined});
+        this.props.dispatch(setSelectedEventId(undefined));
     }
 
     _handlePrev() {
-        // TODO: Update this.state.day to go back 1 day so previous button works
-        this.setState({day: this.state.day - MILLISECONDS_DAY});
+        this.props.dispatch(setDay(this.props.day - MILLISECONDS_DAY));
     }
 
     _handleNext() {
-        // TODO: Update this.state.day to go forward 1 day so next button works
-        this.setState({day: this.state.day + MILLISECONDS_DAY});
+        this.props.dispatch(setDay(this.props.day + MILLISECONDS_DAY));
     }
 
     render() {
-        let {events, day, selectedEventId} = this.state;
+        let {events, day, selectedEventId} = this.props;
         let filteredEvents = filterEventsByDay(events, day);
         let selectedEvent = getEventFromEvents(events, selectedEventId);
         let eventDetailOverlay;
@@ -87,3 +75,11 @@ export default class Page extends PureComponent {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    events: state.events,
+    day: state.day,
+    selectedEventId: state.selectedEventId,
+});
+
+export default connect(mapStateToProps)(Page);
