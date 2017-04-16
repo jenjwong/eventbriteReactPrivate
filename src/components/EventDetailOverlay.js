@@ -38,9 +38,9 @@ export default class EventDetailOverlay extends PureComponent {
                     />
                     <div>
                         {displayDateTime}
+
                         <span
-                            className="event-detail-overlay__color"
-                            title={`Event label color: ${color}`}
+                            className={`event-detail-overlay__color ${color}`}
                         />
                     </div>
                     <h1 className="event-detail-overlay__title">
