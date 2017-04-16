@@ -19,7 +19,7 @@ export default class TimeSlotEvent extends PureComponent {
         // TODO: Need a way to determine that the event is in the past so that it
         // can be displayed faded-out
         let displayColor;
-        isEventPassed(start) ?  displayColor = color :  displayColor = 'gray half-opacity';
+        isEventPassed(start) ?  displayColor = 'gray half-opacity' : displayColor = color;
 
         return (
             <button className={`time-slot-event time-slot-event ${displayColor}`} onClick={onSelect}>
