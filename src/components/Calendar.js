@@ -1,7 +1,8 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
 import {filterEventsByHour} from '../utils';
 import {HOURS_DAY} from '../utils/constants';
 import {EVENTS_PROP_TYPE} from './constants';
+
 import TimeSlot from './TimeSlot';
 
 import './Calendar.css';
@@ -9,11 +10,10 @@ import './Calendar.css';
 export default class Calendar extends PureComponent {
     static propTypes = {
         events: EVENTS_PROP_TYPE.isRequired,
-        onSelectEvent: PropTypes.func.isRequired,
     }
 
     _renderTimeSlots() {
-        let {events, onSelectEvent} = this.props;
+        let {events} = this.props;
 
         return new Array(HOURS_DAY)
             .fill(0)
@@ -26,7 +26,6 @@ export default class Calendar extends PureComponent {
                         key={hour}
                         hour={hour}
                         events={filteredEvents}
-                        onSelectEvent={onSelectEvent}
                     />
                 )
             });
@@ -34,7 +33,7 @@ export default class Calendar extends PureComponent {
 
     render() {
         return (
-            <main className="calendar">
+            <main className="calendar b-r-5">
                 {this._renderTimeSlots()}
             </main>
         );

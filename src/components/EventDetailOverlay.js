@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import {Link} from 'react-router-dom';
 import {EVENT_PROP_TYPE} from './constants';
 import {getDisplayDate, getDisplayHour} from '../utils';
 
@@ -7,16 +8,15 @@ import './EventDetailOverlay.css';
 export default class EventDetailOverlay extends PureComponent {
     static propTypes = {
         event: EVENT_PROP_TYPE.isRequired,
-        onClose: PropTypes.func.isRequired
     }
 
     render() {
-        let {event, onClose} = this.props;
+        let {event} = this.props;
         let {title, description, start, color, hours} = event;
         let displayDate = getDisplayDate(start);
         let startHour = (new Date(start)).getHours();
-
-        // TODO: Fix. If hours was other than 1 the UI would break
+        //
+        // // TODO: Fix. If hours was other than 1 the UI would break
         let endHour = startHour + hours;
 
         let startHourDisplay = getDisplayHour(startHour)
@@ -30,15 +30,12 @@ export default class EventDetailOverlay extends PureComponent {
         // TODO: Support clicking ESC to close it
         return (
             <section className="event-detail-overlay">
-                <div className="event-detail-overlay__container">
-                    <button
-                        className="event-detail-overlay__close"
-                        title="Close detail view"
-                        onClick={onClose}
-                    />
+                <div className="event-detail-overlay__container b-r-5">
+                    <Link to={{ pathname: `/` }}>
+                        <div className="event-detail-overlay__close" title="Close detail view"></div>
+                    </Link>
                     <div>
                         {displayDateTime}
-
                         <span
                             className={`event-detail-overlay__color ${color}`}
                         />

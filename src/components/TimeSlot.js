@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {EVENTS_PROP_TYPE} from './constants';
 import {getDisplayHour} from '../utils';
 import TimeSlotEvent from './TimeSlotEvent';
@@ -9,15 +10,14 @@ export default class TimeSlot extends PureComponent {
     static propTypes = {
         hour: PropTypes.number.isRequired,
         events: EVENTS_PROP_TYPE.isRequired,
-        onSelectEvent: PropTypes.func.isRequired,
     }
 
     _renderEvents() {
-        let {events, onSelectEvent} = this.props;
+        let {events} = this.props;
 
         return events.map((event) => (
             <div key={event.id} className="time-slot__event">
-                <TimeSlotEvent event={event} onSelect={onSelectEvent.bind(null, event.id)} />
+                <TimeSlotEvent event={event} />
             </div>
         ));
     }
