@@ -1,0 +1,14 @@
+exports[`test AddEventButton Snapshot 1`] = `
+<Link
+  replace={false}
+  to={
+    Object {
+      "pathname": "/addEvent",
+    }
+  }>
+  <div
+    className="add-task-button">
+    ＋ Add Event
+  </div>
+</Link>
+`;
