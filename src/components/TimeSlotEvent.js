@@ -15,14 +15,12 @@ export default class TimeSlotEvent extends PureComponent {
             event: {title, start, color, id}
         } = this.props;
 
-        // TODO: Need a way to determine that the event is in the past so that it
-        // can be displayed faded-out
         let displayColor;
         isEventPassed(start) ?  displayColor = 'gray half-opacity' : displayColor = color;
 
         return (
             <Link to={{ pathname: `/details/${id}` }}>
-                <div className={`time-slot-event time-slot-event b-r-5 ${displayColor}`}>
+                <div className={`time-slot-event b-r-5 ${displayColor}`}>
                     {title}
                 </div>
             </Link>
