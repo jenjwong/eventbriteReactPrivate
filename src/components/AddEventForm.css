@@ -63,3 +63,8 @@ textarea[class*="add-event-form"] {
     height: 2vh;
     margin-top: 2vh;
 }
+.add-event-form-message {
+    text-align: center;
+    padding-top: 5vh;
+    color: red;
+}

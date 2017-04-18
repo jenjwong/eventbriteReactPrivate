@@ -21,6 +21,7 @@ export class AddEventForm extends PureComponent {
             date: '',
             hours: 1,
             color: 'shamrock',
+            message: '',
         }
     }
 
@@ -29,10 +30,21 @@ export class AddEventForm extends PureComponent {
         this.setState({[e.target.name]: sanitizedInput});
     }
 
+    isValidSubmission(newEvent){
+        return Object.keys(newEvent).reduce((acc, item) => {
+          return newEvent[item] && acc;
+        }, true);
+    }
+
+    displayMessage(messageString) {
+        this.setState({message: messageString})
+        setTimeout(() => this.setState({message: ''}), 1500);
+        return;
+    }
+
     addEventFormSubmit(event) {
         event.preventDefault();
         const timestamp = new Date(`${this.state.date} ${this.state.startHour}`).getTime();
-
         const newEvent = {title: this.state.title,
                           description: this.state.description,
                           hours: this.state.hours,
@@ -41,7 +53,12 @@ export class AddEventForm extends PureComponent {
                           start: timestamp,
                           id: idGenerator(),
                       };
-        this.props.dispatch(addEvent(newEvent));
+        if (this.isValidSubmission(newEvent)) {
+            this.props.dispatch(addEvent(newEvent));
+            this.displayMessage('Event Created!')
+            return;
+        }
+        this.displayMessage('Please Fill Out All Fields')
     }
 
     render() {
@@ -63,7 +80,6 @@ export class AddEventForm extends PureComponent {
                           className="add-event-form__title"
                           placeholder="Event name"
                         />
-
                         <textarea
                           type="text"
                           name='description'
@@ -101,6 +117,9 @@ export class AddEventForm extends PureComponent {
                         <button className="add-event-form__button">Create Event</button>
                     </div>
                 </form>
+                <div className='add-event-form-message'>
+                    {this.state.message}
+                </div>
             </div>
         );
     }
