@@ -1,8 +1,4 @@
-import {SET_SELECTED_EVENT_ID, ADD_EVENT, SET_DAY} from './actions';
-
-export const setSelectedEventId = selectedEventId => ({
-    type: SET_SELECTED_EVENT_ID, selectedEventId,
-});
+import {ADD_EVENT, SET_DAY} from './actions';
 
 export const addEvent = event => ({
     type: ADD_EVENT, event,

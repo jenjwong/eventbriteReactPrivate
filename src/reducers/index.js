@@ -1,5 +1,5 @@
 import DATA_SET from '../utils/data';
-import {ADD_EVENT, SET_SELECTED_EVENT_ID, SET_DAY} from '../actions/actions';
+import {ADD_EVENT, SET_DAY} from '../actions/actions';
 
 const DEFAULT_STATE = {
     events: DATA_SET,
@@ -11,12 +11,12 @@ const event = (state, action) => {
     switch (action.type) {
         case ADD_EVENT:
             return {
-                id: action.id,
-                title: action.title,
-                description: action.description,
-                start: action.start,
-                hours: action.hours,
-                color: action.color
+                id: action.event.id,
+                title: action.event.title,
+                description: action.event.description,
+                start: action.event.start,
+                hours: action.event.hours,
+                color: action.event.color
             }
         default:
             return state
@@ -26,14 +26,9 @@ const event = (state, action) => {
 const events = (state = DEFAULT_STATE, action) => {
     switch (action.type) {
         case ADD_EVENT:
-            return [
-                ...state,
-                event(undefined, action)
-            ]
-        case SET_SELECTED_EVENT_ID:
             return {
                 ...state,
-                selectedEventId: action.selectedEventId
+                events: [...state.events, event(undefined, action)]
             }
         case SET_DAY:
             return {
