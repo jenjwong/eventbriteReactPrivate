@@ -7,7 +7,8 @@ exports[`test AddEventButton Snapshot 1`] = `
     }
   }>
   <div
-    className="add-task-button">
+    className="add-task-button"
+    title="Add New Event">
     ＋ Add Event
   </div>
 </Link>
