@@ -1,55 +1,109 @@
-import React, {PureComponent, PropTypes} from 'react';
-import {EVENT_PROP_TYPE} from './constants';
-import {getDisplayDate, getDisplayHour} from '../utils';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {addEvent} from '../actions/actionCreators';
+import idGenerator from 'uuid/v1';
+import sanitize from 'sanitize-caja';
 
-import './EventDetailOverlay.css';
+import './AddEventForm.css';
 
-export default class EventDetailOverlay extends PureComponent {
+export class AddEventForm extends PureComponent {
     static propTypes = {
-        // event: EVENT_PROP_TYPE.isRequired,
-        // onClose: PropTypes.func.isRequired
+        dispatch: PropTypes.func.isRequired
+    }
+
+    constructor() {
+        super()
+        this.state = {
+            title: '',
+            description: '',
+            startHour: '09:00',
+            date: '',
+            hours: 1,
+            color: 'shamrock',
+        }
+    }
+
+    handleInputChange(e) {
+        const sanitizedInput = sanitize(e.target.value);
+        this.setState({[e.target.name]: sanitizedInput});
+    }
+
+    addEventFormSubmit(event) {
+        event.preventDefault();
+        const timestamp = new Date(`${this.state.date} ${this.state.startHour}`).getTime();
+
+        const newEvent = {title: this.state.title,
+                          description: this.state.description,
+                          hours: this.state.hours,
+                          date: this.state.date,
+                          color: this.state.color,
+                          start: timestamp,
+                          id: idGenerator(),
+                      };
+        this.props.dispatch(addEvent(newEvent));
     }
 
     render() {
-        // let {event, onClose} = this.props;
-        // let {title, description, start, color, hours} = event;
-        // let displayDate = getDisplayDate(start);
-        // let startHour = (new Date(start)).getHours();
-        //
-        // // TODO: Fix. If hours was other than 1 the UI would break
-        // let endHour = startHour + hours;
-        //
-        // let startHourDisplay = getDisplayHour(startHour)
-        // let endHourDisplay = getDisplayHour(endHour);
-        //
-        // let displayDateTime = `${displayDate} ${startHourDisplay} - ${endHourDisplay}`
-
-        // TODO: The event label color should match the event color
-        // TODO: Add appropriate ARIA tags to overlay/dialog
-        // TODO: Support clicking outside of the overlay to close it
-        // TODO: Support clicking ESC to close it
         return (
-            <section className="event-detail-overlay">
-              THIS IS THE FORM
-                {/* <div className="event-detail-overlay__container">
-                    <button
-                        className="event-detail-overlay__close"
-                        title="Close detail view"
-                        onClick={onClose}
-                    />
-                    <div>
-                        ADD EVENT FORM!!!
-
-                        <span
-                            className={`event-detail-overlay__color ${color}`}
+            <div>
+                <h1 className="add-event-form__title">
+                    Add an Event
+                </h1>
+                <form
+                  className="add-event-form"
+                  onSubmit={(e) => this.addEventFormSubmit(e)}
+                >
+                    <div className="add-event-form__text-container">
+                        <input
+                          type="text"
+                          name='title'
+                          onChange={(e) => this.handleInputChange(e)}
+                          value={this.state.title}
+                          className="add-event-form__title"
+                          placeholder="Event name"
                         />
+
+                        <textarea
+                          type="text"
+                          name='description'
+                          onChange={(e) => this.handleInputChange(e)}
+                          value={this.state.description}
+                          className="add-event-form__description"
+                          placeholder="Describe your event"
+                        >
+                        </textarea>
                     </div>
-                    <h1 className="event-detail-overlay__title">
-                        {title}
-                    </h1>
-                    <p>{description}</p>
-                </div> */}
-            </section>
+                    <div className="add-event-form__date-container">
+                        <input
+                          name="date"
+                          type="date"
+                          value={this.state.date}
+                          className="add-event-form__date"
+                          onChange={(e) => this.handleInputChange(e)}
+                        />
+                        <input
+                        name="startHour"
+                        type="time"
+                        value={this.state.startHour}
+                        className="add-event-form__startHour"
+                        onChange={(e) => this.handleInputChange(e)}
+                        />
+                        <select
+                          name="color"
+                          value={this.state.color}
+                          onChange={(e) => this.handleInputChange(e)}>
+                          <option value="shamrock">Shamrock</option>
+                          <option value="rose">Rose</option>
+                          <option value="canary">Canary</option>
+                          <option value="sea">Sea</option>
+                        </select>
+                        <button className="add-event-form__button">Create Event</button>
+                    </div>
+                </form>
+            </div>
         );
     }
 }
+
+export default connect(null)(AddEventForm);
