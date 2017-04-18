@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {addEvent} from '../actions/actionCreators';
-import idGenerator from 'uuid/v1';
 import sanitize from 'sanitize-caja';
 
 import './AddEventForm.css';
@@ -51,14 +50,14 @@ export class AddEventForm extends PureComponent {
                           date: this.state.date,
                           color: this.state.color,
                           start: timestamp,
-                          id: idGenerator(),
+                          id: Date.now(),
                       };
         if (this.isValidSubmission(newEvent)) {
             this.props.dispatch(addEvent(newEvent));
-            this.displayMessage('Event Created!')
+            this.displayMessage('Event Created!');
             return;
         }
-        this.displayMessage('Please Fill Out All Fields')
+        this.displayMessage('Please Fill Out All Fields');
     }
 
     render() {
