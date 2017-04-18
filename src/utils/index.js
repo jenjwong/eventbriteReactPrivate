@@ -12,7 +12,11 @@ export const dateAtMidnight = (timestamp) => new Date(timestamp).setHours(0,0,0,
  * @param {Date} timestamp - The timestamp representing the day to match
  * @returns {array}
  */
-export const filterEventsByDay = (events, timestamp) => events.filter(event => dateAtMidnight(event.start) === dateAtMidnight(timestamp));
+export const filterEventsByDay = (events, timestamp) => {
+    return events.filter((event) => {
+      return dateAtMidnight(event.start) === dateAtMidnight(timestamp)
+    });
+};
 
 /**
  * Given a list of events and an hour number, filter the events down to those that
@@ -63,7 +67,7 @@ export const getDisplayHour = (hour) => {
  * @returns {object}
  */
 export const getEventFromEvents = (events, eventId) => (
-    events.find(({id}) => id == eventId)
+    events.find(({id}) => id === parseInt(eventId, 10))
 )
 
 /**
