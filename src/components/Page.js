@@ -5,7 +5,9 @@ import {Route} from 'react-router-dom';
 import {setDay} from '../actions/actionCreators';
 import Calendar from './Calendar';
 import AddEventButton from './AddEventButton';
-import EventDetailOverlay from './EventDetailOverlay';
+import DetailOverlay from './DetailOverlay';
+import EventDetails from './EventDetails';
+import AddEventForm from './AddEventForm';
 import {MILLISECONDS_DAY} from '../utils/constants';
 import {filterEventsByDay, getEventFromEvents, getDisplayDate} from '../utils';
 
@@ -20,20 +22,23 @@ const DayNavigator = ({dateDisplay, onPrev, onNext}) => {
                 onClick={onPrev}
             />
             <h2 className="page__date">{dateDisplay}</h2>
-            <button
-                className="page__nav-button page__next-day"
-                title="Go to next day"
-                onClick={onNext}
-            />
+            <nav className="page__nav">
+                <button
+                    className="page__nav-button page__next-day"
+                    title="Go to next day"
+                    onClick={onNext}
+                />
+            </nav>
         </nav>
     );
 };
 
-class Page extends PureComponent {
+export class Page extends PureComponent {
 
     static propTypes = {
         day: PropTypes.number.isRequired,
-        events: PropTypes.arrayOf(PropTypes.object)
+        events: PropTypes.arrayOf(PropTypes.object).isRequired,
+        dispatch: PropTypes.func.isRequired
     }
 
     _handlePrev() {
@@ -50,11 +55,15 @@ class Page extends PureComponent {
                 render={
                     ({match}) => {
                         const selectedEvent = getEventFromEvents(this.props.events, match.params.id);
-                        return <EventDetailOverlay event={selectedEvent} {...this.props} />
+                        return <DetailOverlay content={<EventDetails event={selectedEvent} {...this.props} />} />
                     }
                 }
             />
         )
+    }
+
+    _AddEventFormRenderHelper() {
+        return <Route path="/addEvent" render={() => <DetailOverlay content={<AddEventForm />} />} />
     }
 
     render() {
@@ -76,6 +85,7 @@ class Page extends PureComponent {
                 />
                 <Calendar events={filteredEvents} />
                 {this._eventDetailOverlayRenderHelper()}
+                {this._AddEventFormRenderHelper()}
             </div>
         );
     }
