@@ -3,7 +3,7 @@
  * TODO: On narrow screens the background shouldn't scroll when detail overlay is shown
  */
 .page {
-    margin: 1rem;
+    padding: 1rem;
     background: linear-gradient(to bottom,white,lightgray);
 }
 .page__header {

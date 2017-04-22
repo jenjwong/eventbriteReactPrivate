@@ -41,6 +41,10 @@ export class Page extends PureComponent {
         dispatch: PropTypes.func.isRequired
     }
 
+    componentDidMount() {
+      window.addEventListener('keydown', (e) => this._isESC(e), true);
+    }
+
     _handlePrev() {
         this.props.dispatch(setDay(this.props.day - MILLISECONDS_DAY));
     }
@@ -55,6 +59,7 @@ export class Page extends PureComponent {
                 render={
                     ({match}) => {
                         const selectedEvent = getEventFromEvents(this.props.events, match.params.id);
+
                         return <DetailOverlay content={<EventDetails event={selectedEvent} {...this.props} />} />
                     }
                 }
@@ -66,12 +71,25 @@ export class Page extends PureComponent {
         return <Route path="/addEvent" render={() => <DetailOverlay content={<AddEventForm />} />} />
     }
 
+// kinda hackey is there a better way
+    _handleClick(e) {
+      if(this.props.location.pathname.includes('details') && !e.target.className.includes('detail')) {
+        this.props.history.push('/');
+      }
+    }
+
+    _isESC(e) {
+      if(e.keyCode == 27) {
+        this.props.history.push('/');
+      }
+    }
+
     render() {
         let {events, day} = this.props;
         let filteredEvents = filterEventsByDay(events, day);
 
         return (
-            <div className="page">
+            <div className="page" onClick={(e) => this._handleClick(e)}>
                 <header className="page__header">
                     <h1 className="page__title">Daily Agenda</h1>
                     <span className="page__add-task-button">

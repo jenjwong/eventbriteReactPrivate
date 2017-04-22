@@ -9,7 +9,7 @@ const App = () => {
         <Router>
             <Provider store={store}>
                 <div>
-                    <Route  path="/" component={Page} />
+                    <Route path="/" component={Page} />
                 </div>
             </Provider>
         </Router>

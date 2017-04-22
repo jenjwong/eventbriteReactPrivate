@@ -18,10 +18,10 @@ export default class EventDetails extends PureComponent {
         let startHourDisplay = getDisplayHour(startHour)
         let endHourDisplay = getDisplayHour(endHour);
         let displayDateTime = `${displayDate} ${startHourDisplay} - ${endHourDisplay}`
-
+  console.log(this.props.match)
         return (
-            <div>
-                <div>
+            <div className={`event-detail-overlay__wrapper`}>
+                <div   className={`event-detail-overlay__time`}>
                     {displayDateTime}
                     <span
                         className={`event-detail-overlay__color ${color}`}
@@ -30,7 +30,7 @@ export default class EventDetails extends PureComponent {
                 <h1 className="event-detail-overlay__title">
                     {title}
                 </h1>
-                <p>{description}</p>
+                <p className="event-detail-overlay__p">{description}</p>
             </div>
         );
     }
