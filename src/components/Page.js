@@ -71,9 +71,14 @@ export class Page extends PureComponent {
         return <Route path="/addEvent" render={() => <DetailOverlay content={<AddEventForm />} />} />
     }
 
-// kinda hackey is there a better way
-    _handleClick(e) {
-      if(this.props.location.pathname.includes('details') && !e.target.className.includes('detail')) {
+    _handleClickToClose(e) {
+      function descendantOfClass(node, className) {
+        if (node.className.split('-').includes(className)) {
+          return true;
+        }
+        return node.parentNode.classList !== undefined && descendantOfClass(node.parentNode);
+      }
+      if(this.props.location.pathname.includes('details') && !descendantOfClass(e.target, 'detail')) {
         this.props.history.push('/');
       }
     }
@@ -89,7 +94,7 @@ export class Page extends PureComponent {
         let filteredEvents = filterEventsByDay(events, day);
 
         return (
-            <div className="page" onClick={(e) => this._handleClick(e)}>
+            <div className="page" onClick={(e) => this._handleClickToClose(e)}>
                 <header className="page__header">
                     <h1 className="page__title">Daily Agenda</h1>
                     <span className="page__add-task-button">
